@@ -48,8 +48,16 @@ def estimate_pallet_positions(count: int, stackable: bool) -> int:
 #   Authentication (0.4.x)
 # =========================
 def build_auth_objects():
-    auth_cfg = st.secrets["auth"]
-    users = st.secrets.get("users", [])  # [[users]] blocks in secrets.toml
+    # Lee bloques de secrets con fallback
+    auth_cfg = st.secrets.get("auth")
+    users = st.secrets.get("users", [])
+
+    if not auth_cfg or not users:
+        st.error(
+            "Missing `[auth]` or `[[users]]` in Streamlit **Secrets**.\n\n"
+            "Ve a *Manage app → Settings → Secrets* y pega tu `.streamlit/secrets.toml`."
+        )
+        st.stop()
 
     credentials = {"usernames": {}}
     username_to_client = {}
@@ -59,7 +67,7 @@ def build_auth_objects():
         username = u["username"]
         credentials["usernames"][username] = {
             "name": u["name"],
-            "password": u["password"],  # hashed
+            "password": u["password"],  # hash
         }
         username_to_client[username] = u.get("client_id", "demo")
         username_to_role[username] = u.get("role", "viewer")
