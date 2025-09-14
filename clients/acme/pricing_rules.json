@@ -1,4 +1,0 @@
-{
-  "global": { "round_to": 10, "fixed_charges_aed": 30.0, "gate_in_out_aed": 12.0 },
-  "vehicle_minimums": { "van": 180, "3t_truck": 210, "7t_truck": 270, "flatbed": 320, "reefer_truck": 350 }
-}
